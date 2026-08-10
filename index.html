@@ -1,410 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Grade Calculator</title>
-
-    <link rel="stylesheet" href="style.css">
-
-    <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Student Grade Calculator</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div class="container">
-
-    <!-- SIDEBAR -->
-
-    <aside class="sidebar">
-
-        <div class="logo">
-
-            <div class="logo-circle">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </div>
-
-            <div>
-                <h2>Grade Calculator</h2>
-                <small>Student Dashboard</small>
-            </div>
-
-        </div>
-
-        <ul class="menu">
-
-            <li class="active">
-                <i class="fa-solid fa-house"></i>
-                <span>Dashboard</span>
-            </li>
-
-            <li>
-                <i class="fa-solid fa-users"></i>
-                <span>All Students</span>
-            </li>
-
-            <li>
-                <i class="fa-solid fa-circle-info"></i>
-                <span>About</span>
-            </li>
-
-        </ul>
-
-        <div class="sidebar-image">
-
-            <img
-                src="assets/graduation.png"
-                alt="Graduation">
-
-        </div>
-
-        <div class="quote">
-
-            <i class="fa-solid fa-book-open-reader"></i>
-
-            <p>
-
-                "Education is the passport to the future, for tomorrow belongs to those who prepare for it today."
-
-            </p>
-
-            <span>— Malcolm X</span>
-
-        </div>
-
-    </aside>
-
-    <!-- maim -->
-
-    <main class="main">
-
-        <header class="header">
-
-            <div class="header-title">
-
-                <div class="header-icon">
-
-                    <i class="fa-solid fa-graduation-cap"></i>
-
-                </div>
-
-                <div>
-
-                    <h1>Student Grade Calculator</h1>
-
-                    <p>
-
-                        Calculate total score, average score, grade and pass/fail status.
-
-                    </p>
-
-                </div>
-
-            </div>
-
-            <button class="theme-btn">
-
-                <i class="fa-solid fa-sun"></i>
-
-            </button>
-
-        </header>
-
-        <!-- Statistics Cards -->
-
-        <section class="stats">
-
-            <div class="card blue">
-
-                <div class="icon">
-
-                    <i class="fa-solid fa-users"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 id="studentCount">0</h2>
-
-                    <span>Total Students</span>
-
-                </div>
-
-            </div>
-
-            <div class="card green">
-
-                <div class="icon">
-
-                    <i class="fa-solid fa-square-poll-vertical"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 id="totalScore">0</h2>
-
-                    <span>Total Score</span>
-
-                </div>
-
-            </div>
-
-            <div class="card orange">
-
-                <div class="icon">
-
-                    <i class="fa-solid fa-chart-column"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 id="averageScore">0</h2>
-
-                    <span>Average Score</span>
-
-                </div>
-
-            </div>
-
-            <div class="card purple">
-
-                <div class="icon">
-
-                    <i class="fa-solid fa-circle-check"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 id="passCount">0</h2>
-
-                    <span>Passed</span>
-
-                </div>
-
-            </div>
-
-            <div class="card red">
-
-                <div class="icon">
-
-                    <i class="fa-solid fa-circle-xmark"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 id="failCount">0</h2>
-
-                    <span>Failed</span>
-
-                </div>
-
-            </div>
-
-        </section>
-
-<section class="dashboard">
-
-    <!-- LEFT SIDE -->
-
-    <div class="left-panel">
-
-        <div class="panel">
-
-            <div class="panel-title">
-
-                <i class="fa-solid fa-user-plus"></i>
-
-                <h2>Add Student</h2>
-
-            </div>
-
-            <form id="studentForm">
-
-                <div class="input-group">
-
-                    <label>Student Name</label>
-
-                    <input
-                        type="text"
-                        id="studentName"
-                        placeholder="Enter student name">
-
-                </div>
-
-                <div class="input-group">
-
-                    <label>CA Score</label>
-
-                    <input
-                        type="number"
-                        id="ca"
-                        min="0"
-                        max="100"
-                        placeholder="0 - 100">
-
-                </div>
-
-                <div class="input-group">
-
-                    <label>Assignment Score</label>
-
-                    <input
-type="number"
-id="ca"
-placeholder="CA Score (0 - 30)"
-min="0"
-max="30">
-
-<input
-type="number"
-id="assignment"
-placeholder="Assignment Score (0 - 20)"
-min="0"
-max="20">
-
-<input
-type="number"
-id="exam"
-placeholder="Exam Score (0 - 50)"
-min="0"
-max="50">
-                </div>
-
-                <div class="buttons">
-
-                    <button
-                        class="add-btn"
-                        type="submit">
-
-                        <i class="fa-solid fa-plus"></i>
-
-                        Calculate & Add
-
-                    </button>
-
-                    <button
-                        class="clear-btn"
-                        type="reset">
-
-                        <i class="fa-solid fa-rotate-right"></i>
-
-                        Clear
-
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-        <!-- Grade Scale -->
-
-        <div class="panel">
-
-            <div class="panel-title">
-
-                <i class="fa-solid fa-award"></i>
-
-                <h2>Grading Scale</h2>
-
-            </div>
-
-            <div class="grade-scale">
-
-                <div>A <span>70 – 100</span></div>
-                <div>B <span>60 – 69</span></div>
-                <div>C <span>50 – 59</span></div>
-                <div>D <span>45 – 49</span></div>
-                <div>E <span>40 – 44</span></div>
-                <div>F <span>0 – 39</span></div>
-
-            </div>
-
-        </div>
-
+<nav class="navbar">
+  <div class="nav-left">
+    <div class="nav-logo">🎓</div>
+    <div class="nav-title">Grade Calculator<span>Student performance made simple</span></div>
+  </div>
+  <div class="nav-links">
+    <button class="nav-link active" data-view="dashboard">🏠 Dashboard</button>
+    <button class="nav-link" data-view="students">👥 All Students</button>
+    <button class="nav-link" data-view="about">ℹ️ About</button>
+  </div>
+  <div class="nav-right">
+    <button class="theme-btn" id="themeToggle">☀️</button>
+  </div>
+</nav>
+
+<!-- ================= DASHBOARD VIEW ================= -->
+<section id="view-dashboard" class="view">
+  <div class="page-header">
+    <h1>Student Grade Calculator</h1>
+    <p>Enter student scores to calculate total, average, grade and pass/fail status.</p>
+  </div>
+
+  <div class="container">
+    <!-- LEFT: FORM -->
+    <div>
+      <div class="card form-card">
+      <h2><span class="form-icon">👤</span> Add New Student</h2>
+
+      <label>Student Name</label>
+      <div class="input-wrap">
+        <span class="icon">👤</span>
+        <input type="text" id="studentName" placeholder="Enter student name" />
+      </div>
+
+      <label>Assessment Scores</label>
+      <div class="input-wrap">
+        <span class="icon">📋</span>
+        <input type="number" id="caScore" placeholder="CA Score (out of 100)" min="0" max="100" />
+      </div>
+      <div style="margin-top:10px" class="input-wrap">
+        <span class="icon">📝</span>
+        <input type="number" id="assignScore" placeholder="Assignment Score (out of 100)" min="0" max="100" />
+      </div>
+      <div style="margin-top:10px" class="input-wrap">
+        <span class="icon">✏️</span>
+        <input type="number" id="examScore" placeholder="Exam Score (out of 100)" min="0" max="100" />
+      </div>
+
+      <button class="btn btn-primary" id="addBtn">🧮 Calculate &amp; Add Student</button>
+      <button class="btn btn-ghost" id="clearBtn">↻ Clear Form</button>
     </div>
 
-    <!-- RIGHT SIDE -->
-
-    <div class="right-panel">
-
-        <div class="table-header">
-
-            <h2>Student Records</h2>
-
-            <div class="search">
-
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="text"
-                    id="searchStudent"
-                    placeholder="Search student...">
-
-            </div>
-
-        </div>
-
-        <div class="table-wrapper">
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>#</th>
-                        <th>Name</th>
-                        <th>CA</th>
-                        <th>Assignment</th>
-                        <th>Exam</th>
-                        <th>Total</th>
-                        <th>Average</th>
-                        <th>Grade</th>
-                        <th>Status</th>
-                        <th>Delete</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody id="studentTable">
-
-                    <tr>
-
-                        <td colspan="10" class="empty">
-
-                            No student records available.
-
-                        </td>
-
-                    </tr>
-
-                </tbody>
-
-            </table>
-
-        </div>
-
+    <div class="card scale-card">
+      <div class="scale-title">🎓 Grading Scale</div>
+      <div class="scale-grid">
+        <div class="scale-item"><b>A:</b> 80 – 100</div>
+        <div class="scale-item"><b>B:</b> 70 – 79</div>
+        <div class="scale-item"><b>C:</b> 60 – 69</div>
+        <div class="scale-item"><b>D:</b> 50 – 59</div>
+        <div class="scale-item"><b>E:</b> 40 – 49</div>
+        <div class="scale-item"><b>F:</b> 0 – 39</div>
+      </div>
     </div>
+  </div>
 
+  <!-- RIGHT: STATS + TABLE -->
+  <div>
+    <div class="stats" id="statsRow"></div>
+
+    <div class="card table-card">
+      <div class="table-head">
+        <h3>All Student Records</h3>
+        <div class="search-wrap">
+          <span>🔍</span>
+          <input type="text" id="searchInput" placeholder="Search student..." />
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>CA Score</th><th>Assignment</th><th>Exam</th>
+            <th>Total</th><th>Average</th><th>Grade</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+      <div class="table-footer">
+        <span id="footerCount">Showing 0 of 0 students</span>
+      </div>
+    </div>
+  </div>
+  </div>
 </section>
 
-    </main>
+<!-- ================= ALL STUDENTS VIEW ================= -->
+<section id="view-students" class="view" hidden>
+  <div class="page-header">
+    <h1>All Students</h1>
+    <p>Every student record in one place — search, review, and manage the full list.</p>
+  </div>
 
-</div>
+  <div class="container container-single">
+    <div class="card table-card">
+      <div class="table-head">
+        <h3>All Student Records</h3>
+        <div class="search-wrap">
+          <span>🔍</span>
+          <input type="text" id="searchInputStudents" placeholder="Search student..." />
+        </div>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>Name</th><th>CA Score</th><th>Assignment</th><th>Exam</th>
+            <th>Total</th><th>Average</th><th>Grade</th><th>Status</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBodyStudents"></tbody>
+      </table>
+      <div class="table-footer">
+        <span id="footerCountStudents">Showing 0 of 0 students</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT VIEW ================= -->
+<section id="view-about" class="view" hidden>
+  <div class="page-header">
+    <h1>About</h1>
+    <p>What this tool does and how grades are calculated.</p>
+  </div>
+
+  <div class="container container-single">
+    <div class="card about-card">
+      <h2><span class="form-icon">🎓</span> Student Grade Calculator</h2>
+      <p>
+        This dashboard helps you record CA, Assignment, and Exam scores for each student,
+        then automatically works out their total, average, letter grade, and pass/fail status.
+      </p>
+
+      <h3>How grades are calculated</h3>
+      <p>
+        Total = CA + Assignment + Exam (each out of 100). Average = Total ÷ 3.
+        The average then maps to a letter grade using the scale below, and any average
+        of 50 or higher is marked as a pass.
+      </p>
+
+      <div class="scale-grid about-scale">
+        <div class="scale-item"><b>A:</b> 80 – 100</div>
+        <div class="scale-item"><b>B:</b> 70 – 79</div>
+        <div class="scale-item"><b>C:</b> 60 – 69</div>
+        <div class="scale-item"><b>D:</b> 50 – 59</div>
+        <div class="scale-item"><b>E:</b> 40 – 49</div>
+        <div class="scale-item"><b>F:</b> 0 – 39</div>
+      </div>
+
+      <h3>Data storage</h3>
+      <p>
+        Student records are saved to your browser's local storage, so they'll still be here
+        the next time you open this page on the same device and browser.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="toast" id="toast"></div>
 
 <script src="script.js"></script>
-
 </body>
 </html>

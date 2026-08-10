@@ -1,382 +1,256 @@
-// ============================================
-// STUDENT GRADE CALCULATOR
-// ============================================
+// ---------- OOP: Student class ----------
+  class Student {
+    constructor(id, name, ca, assignment, exam) {
+      this.id = id;
+      this.name = name;
+      this.ca = ca;
+      this.assignment = assignment;
+      this.exam = exam;
+    }
+    getTotal() { return this.ca + this.assignment + this.exam; }
+    getAverage() { return this.getTotal() / 3; }
+    getGrade() {
+      const avg = this.getAverage();
+      if (avg >= 80) return "A";
+      if (avg >= 70) return "B";
+      if (avg >= 60) return "C";
+      if (avg >= 50) return "D";
+      if (avg >= 40) return "E";
+      return "F";
+    }
+    getStatus() { return this.getAverage() >= 50 ? "PASS" : "FAIL"; }
+  }
 
-class StudentGradeCalculator {
-
+  // ---------- App state ----------
+  class GradeBook {
     constructor() {
-
-        // Local Storage
-        this.students = JSON.parse(localStorage.getItem("students")) || [];
-
-        // Form Elements
-        this.form = document.getElementById("studentForm");
-        this.studentName = document.getElementById("studentName");
-        this.ca = document.getElementById("ca");
-        this.assignment = document.getElementById("assignment");
-        this.exam = document.getElementById("exam");
-
-        // Search
-        this.searchInput = document.getElementById("searchStudent");
-
-        // Table
-        this.studentTable = document.getElementById("studentTable");
-
-        // Dashboard Cards
-        this.studentCount = document.getElementById("studentCount");
-        this.totalScore = document.getElementById("totalScore");
-        this.averageScore = document.getElementById("averageScore");
-        this.passCount = document.getElementById("passCount");
-        this.failCount = document.getElementById("failCount");
-
-        // Initialize App
-        this.initialize();
-
+      this.students = this.load();
     }
-
-    // ============================================
-    // INITIALIZE
-    // ============================================
-
-    initialize() {
-
-        this.bindEvents();
-
-        this.renderStudents();
-
-        this.updateDashboard();
-
+    load() {
+      const raw = localStorage.getItem("gradebook_students");
+      if (!raw) return [];
+      try {
+        const parsed = JSON.parse(raw);
+        return parsed.map(s => new Student(s.id, s.name, s.ca, s.assignment, s.exam));
+      } catch (e) { return []; }
     }
-
-    // ============================================
-    // EVENTS
-    // ============================================
-
-    bindEvents() {
-
-        this.form.addEventListener("submit", (e) => {
-
-            e.preventDefault();
-
-            this.addStudent();
-
-        });
-
-        this.searchInput.addEventListener("input", () => {
-
-            this.searchStudent();
-
-        });
-
+    save() {
+      localStorage.setItem("gradebook_students", JSON.stringify(this.students));
     }
-    // ============================================
-    // ADD STUDENT
-    // ============================================
-
-    addStudent() {
-
-        const name = this.studentName.value.trim();
-        const ca = Number(this.ca.value);
-        const assignment = Number(this.assignment.value);
-        const exam = Number(this.exam.value);
-
-        // Validation
-
-        if (!name) {
-
-            alert("Please enter the student's name.");
-            this.studentName.focus();
-            return;
-
-        }
-
-        if (
-            isNaN(ca) ||
-            isNaN(assignment) ||
-            isNaN(exam)
-        ) {
-
-            alert("Please enter all scores.");
-            return;
-
-        }
-
-        if (
-            ca < 0 || ca > 30 ||
-            assignment < 0 || assignment > 20 ||
-            exam < 0 || exam > 50
-        ) {
-
-            alert("Invalid score entered.");
-            return;
-
-        }
-
-        // Total is out of 100
-
-        const total = ca + assignment + exam;
-
-        const grade = this.calculateGrade(total);
-
-        const status = total >= 40 ? "PASS" : "FAIL";
-
-        const student = {
-
-            id: Date.now(),
-
-            name,
-
-            ca,
-
-            assignment,
-
-            exam,
-
-            total,
-
-            average: total,
-
-            grade,
-
-            status
-
-        };
-
-        this.students.push(student);
-
-        this.saveStudents();
-
-        this.renderStudents();
-
-        this.updateDashboard();
-
-        this.form.reset();
-
-        this.studentName.focus();
-
+    add(name, ca, assignment, exam) {
+      const id = this.students.length ? Math.max(...this.students.map(s => s.id)) + 1 : 1;
+      const student = new Student(id, name, ca, assignment, exam);
+      this.students.push(student);
+      this.save();
+      return student;
     }
-
-    // ============================================
-    // CALCULATE GRADE
-    // ============================================
-
-    calculateGrade(score) {
-
-        if (score >= 70) return "A";
-
-        if (score >= 60) return "B";
-
-        if (score >= 50) return "C";
-
-        if (score >= 45) return "D";
-
-        if (score >= 40) return "E";
-
-        return "F";
-
+    remove(id) {
+      this.students = this.students.filter(s => s.id !== id);
+      this.save();
     }
-
-    // ============================================
-    // SAVE TO LOCAL STORAGE
-    // ============================================
-
-    saveStudents() {
-
-        localStorage.setItem(
-
-            "students",
-
-            JSON.stringify(this.students)
-
-        );
-
+    stats() {
+      const total = this.students.length;
+      const totalScore = this.students.reduce((sum, s) => sum + s.getTotal(), 0);
+      const avgScore = total ? (this.students.reduce((sum, s) => sum + s.getAverage(), 0) / total) : 0;
+      const passed = this.students.filter(s => s.getStatus() === "PASS").length;
+      const failed = total - passed;
+      return { total, totalScore, avgScore, passed, failed };
     }
+  }
 
-        // ============================================
-    // RENDER STUDENTS
-    // ============================================
+  const gradebook = new GradeBook();
 
-    renderStudents(students = this.students) {
+  // ---------- DOM refs ----------
+  const nameInput = document.getElementById("studentName");
+  const caInput = document.getElementById("caScore");
+  const assignInput = document.getElementById("assignScore");
+  const examInput = document.getElementById("examScore");
+  const addBtn = document.getElementById("addBtn");
+  const clearBtn = document.getElementById("clearBtn");
+  const statsRow = document.getElementById("statsRow");
+  const toast = document.getElementById("toast");
+  const themeToggle = document.getElementById("themeToggle");
 
-        if (students.length === 0) {
-
-            this.studentTable.innerHTML = `
-                <tr>
-                    <td colspan="10" class="empty">
-                        🎓 No student records yet.
-                    </td>
-                </tr>
-            `;
-
-            return;
-
-        }
-
-        this.studentTable.innerHTML = "";
-
-        students.forEach((student, index) => {
-
-            this.studentTable.innerHTML += `
-
-                <tr>
-
-                    <td>${index + 1}</td>
-
-                    <td>${student.name}</td>
-
-                    <td>${student.ca}</td>
-
-                    <td>${student.assignment}</td>
-
-                    <td>${student.exam}</td>
-
-                    <td>${student.total}</td>
-
-                    <td>${student.average}</td>
-
-                    <td>${student.grade}</td>
-
-                    <td>
-
-                        <span class="${student.status === "PASS" ? "pass" : "fail"}">
-
-                            ${student.status}
-
-                        </span>
-
-                    </td>
-
-                    <td>
-
-                        <button
-                            class="delete-btn"
-                            data-id="${student.id}">
-
-                            <i class="fa-solid fa-trash"></i>
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
-            `;
-
-        });
-
-        // Attach delete events
-        document.querySelectorAll(".delete-btn").forEach(button => {
-
-            button.addEventListener("click", () => {
-
-                this.deleteStudent(Number(button.dataset.id));
-
-            });
-
-        });
-
+  // Two table instances: one on the Dashboard view, one on the All Students view
+  const tables = [
+    {
+      body: document.getElementById("tableBody"),
+      footer: document.getElementById("footerCount"),
+      search: document.getElementById("searchInput"),
+      term: ""
+    },
+    {
+      body: document.getElementById("tableBodyStudents"),
+      footer: document.getElementById("footerCountStudents"),
+      search: document.getElementById("searchInputStudents"),
+      term: ""
     }
+  ];
 
-    // ============================================
-    // UPDATE DASHBOARD
-    // ============================================
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2200);
+  }
 
-    updateDashboard() {
+  function gradeClass(g) { return "grade-" + g; }
 
-        this.studentCount.textContent = this.students.length;
+  function renderStats() {
+    const s = gradebook.stats();
+    statsRow.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-icon icon-blue">👥</div>
+        <div class="stat-num">${s.total}</div>
+        <div class="stat-label">Total Students</div>
+        <div class="stat-bar bar-blue"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-green">📊</div>
+        <div class="stat-num">${s.totalScore}</div>
+        <div class="stat-label">Total Score</div>
+        <div class="stat-bar bar-green"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-amber">📈</div>
+        <div class="stat-num">${s.avgScore.toFixed(2)}</div>
+        <div class="stat-label">Average Score</div>
+        <div class="stat-bar bar-amber"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-violet">🏆</div>
+        <div class="stat-num">${s.passed}</div>
+        <div class="stat-label">Passed</div>
+        <div class="stat-bar bar-violet"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon icon-red">☹️</div>
+        <div class="stat-num">${s.failed}</div>
+        <div class="stat-label">Failed</div>
+        <div class="stat-bar bar-red"></div>
+      </div>
+    `;
+  }
 
-        const totalScore = this.students.reduce(
+  function renderTableInto(table) {
+    if (!table.body) return;
+    const filtered = gradebook.students.filter(s =>
+      s.name.toLowerCase().includes(table.term.toLowerCase())
+    );
 
-            (sum, student) => sum + student.total,
-
-            0
-
-        );
-
-        this.totalScore.textContent = totalScore;
-
-        const averageScore =
-
-            this.students.length === 0
-
-            ? 0
-
-            : (totalScore / this.students.length).toFixed(1);
-
-        this.averageScore.textContent = averageScore;
-
-        const passed = this.students.filter(
-
-            student => student.status === "PASS"
-
-        ).length;
-
-        this.passCount.textContent = passed;
-
-        this.failCount.textContent =
-
-            this.students.length - passed;
-
+    if (filtered.length === 0) {
+      table.body.innerHTML = `<tr class="empty-row"><td colspan="10">No students found. Add your first student to get started.</td></tr>`;
+    } else {
+      table.body.innerHTML = filtered.map((s, i) => `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${s.name}</td>
+          <td>${s.ca}</td>
+          <td>${s.assignment}</td>
+          <td>${s.exam}</td>
+          <td>${s.getTotal()}</td>
+          <td>${s.getAverage().toFixed(2)}</td>
+          <td><span class="badge ${gradeClass(s.getGrade())}">${s.getGrade()}</span></td>
+          <td><span class="status-${s.getStatus().toLowerCase()}">${s.getStatus()}</span></td>
+          <td><button class="del-btn" data-id="${s.id}">🗑️</button></td>
+        </tr>
+      `).join("");
     }
+    table.footer.textContent = `Showing ${filtered.length} of ${gradebook.students.length} students`;
+  }
 
-    // ============================================
-    // DELETE STUDENT
-    // ============================================
+  function renderTables() {
+    tables.forEach(renderTableInto);
+  }
 
-    deleteStudent(id) {
+  function renderAll() {
+    renderStats();
+    renderTables();
+  }
 
-        if (!confirm("Are you sure you want to delete this student?")) {
-
-            return;
-
-        }
-
-        this.students = this.students.filter(
-
-            student => student.id !== id
-
-        );
-
-        this.saveStudents();
-
-        this.renderStudents();
-
-        this.updateDashboard();
-
+  function validate(name, ca, assignment, exam) {
+    if (!name.trim()) return "Please enter a student name.";
+    for (const [label, val] of [["CA", ca], ["Assignment", assignment], ["Exam", exam]]) {
+      if (val === "" || isNaN(val)) return `Please enter a valid ${label} score.`;
+      if (val < 0 || val > 100) return `${label} score must be between 0 and 100.`;
     }
+    return null;
+  }
 
-    // ============================================
-    // SEARCH STUDENT
-    // ============================================
+  addBtn.addEventListener("click", () => {
+    const name = nameInput.value;
+    const ca = parseFloat(caInput.value);
+    const assignment = parseFloat(assignInput.value);
+    const exam = parseFloat(examInput.value);
 
-    searchStudent() {
+    const error = validate(name, caInput.value === "" ? "" : ca, assignInput.value === "" ? "" : assignment, examInput.value === "" ? "" : exam);
+    if (error) { showToast(error); return; }
 
-        const keyword = this.searchInput.value.toLowerCase().trim();
+    gradebook.add(name.trim(), ca, assignment, exam);
+    renderAll();
+    clearForm();
+    showToast(`${name.trim()} added successfully!`);
+  });
 
-        const filtered = this.students.filter(student =>
+  function clearForm() {
+    nameInput.value = "";
+    caInput.value = "";
+    assignInput.value = "";
+    examInput.value = "";
+  }
+  clearBtn.addEventListener("click", clearForm);
 
-            student.name.toLowerCase().includes(keyword)
+  tables.forEach(table => {
+    table.body.addEventListener("click", (e) => {
+      const btn = e.target.closest(".del-btn");
+      if (!btn) return;
+      const id = parseInt(btn.dataset.id, 10);
+      gradebook.remove(id);
+      renderAll();
+      showToast("Student removed.");
+    });
 
-        );
+    table.search.addEventListener("input", (e) => {
+      table.term = e.target.value;
+      renderTableInto(table);
+    });
+  });
 
-        this.renderStudents(filtered);
+  // Theme toggle
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    themeToggle.textContent = document.body.classList.contains("dark") ? "🌙" : "☀️";
+  });
 
-    }
+  // Nav links — switch between Dashboard / All Students / About views
+  const views = {
+    dashboard: document.getElementById("view-dashboard"),
+    students: document.getElementById("view-students"),
+    about: document.getElementById("view-about")
+  };
 
-        // ============================================
-    // SHOW MESSAGE
-    // ============================================
+  function showView(name) {
+    Object.entries(views).forEach(([key, el]) => {
+      if (!el) return;
+      el.hidden = key !== name;
+    });
+    if (name === "students") renderTables();
+  }
 
-    showMessage(message) {
+  document.querySelectorAll(".nav-link").forEach(link => {
+    link.addEventListener("click", () => {
+      document.querySelectorAll(".nav-link").forEach(l => l.classList.remove("active"));
+      link.classList.add("active");
+      showView(link.dataset.view);
+    });
+  });
 
-        alert(message);
+  // Seed with sample data on first load
+  if (gradebook.students.length === 0) {
+    gradebook.add("John Doe", 85, 78, 90);
+    gradebook.add("Mary Smith", 72, 68, 75);
+    gradebook.add("David Brown", 45, 50, 55);
+    gradebook.add("Sarah Wilson", 38, 42, 45);
+    gradebook.add("Mike Johnson", 25, 30, 28);
+  }
 
-    }
-
-} // END OF CLASS
-
-// ============================================
-// START APPLICATION
-// ============================================
-
-const app = new StudentGradeCalculator();
+  renderAll();
