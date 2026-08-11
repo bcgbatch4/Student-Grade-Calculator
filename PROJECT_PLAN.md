@@ -1,139 +1,165 @@
 # Student Grade Calculator – Project Plan
 
-## Project Title
+## 1. Project Title
+
 Student Grade Calculator
 
-## Project Description
-The Student Grade Calculator is a web-based application designed to help lecturers and students calculate academic performance. Users can enter a student's name and assessment scores, after which the application calculates the total score, average score, letter grade, and pass/fail status. The application stores student records using Local Storage so that data is not lost after refreshing the page.
+---
+
+## 2. Project Description
+
+The Student Grade Calculator is a web-based application designed to help
+lecturers and students calculate and manage academic performance.
+
+Users can enter a student's name and three assessment scores. The
+application calculates the student's total score, average score, letter
+grade, and pass/fail status.
+
+Student records are stored using the browser's Local Storage so that the
+records remain available after the page is refreshed.
 
 ---
 
-## Project Objectives
+## 3. Project Requirements
 
-The application should:
+The application must:
 
-- Allow users to enter a student's name.
-- Accept at least three assessment scores.
-- Calculate the student's total score.
-- Calculate the student's average score.
-- Assign a grade from A to F.
-- Display whether the student passed or failed.
-- Display all student records.
-- Allow records to be deleted.
-- Save records using Local Storage.
+1. Allow users to enter a student's name and three assessment scores.
+2. Calculate the student's total and average score.
+3. Automatically assign a grade from A to F.
+4. Display the student's pass/fail status and student records.
+5. Store student records in Local Storage and allow records to be deleted.
 
 ---
 
-## Functional Requirements
+## 4. Classes and Methods
 
-1. Input student name.
-2. Input CA score.
-3. Input Assignment score.
-4. Input Exam score.
-5. Calculate total score.
-6. Calculate average score.
-7. Assign grade.
-8. Display pass/fail status.
-9. Display all student records.
-10. Delete records.
-11. Save and retrieve records using Local Storage.
+### Student Class
 
----
+The `Student` class represents an individual student and contains the
+student's name and assessment scores.
 
-## Expected Inputs
+Methods:
 
-- Student Name
-- CA Score
-- Assignment Score
-- Exam Score
+- `getTotal()` – calculates the student's total score.
+- `getAverage()` – calculates the student's average score.
+- `getGrade()` – determines the student's grade from A to F.
+- `getStatus()` – determines whether the student passed or failed.
 
----
+### GradeBook Class
 
-## Expected Outputs
+The `GradeBook` class manages the collection of student records.
 
-- Student Name
-- Total Score
-- Average Score
-- Grade
-- Pass/Fail Status
-- Student Records Table
+Methods:
+
+- `load()` – retrieves saved student records from Local Storage.
+- `save()` – saves student records to Local Storage.
+- `add()` – adds a new student record.
+- `remove()` – removes a student record.
+- `stats()` – calculates dashboard statistics.
 
 ---
 
-## JavaScript Class
+## 5. Expected Input and Output
 
-StudentGradeCalculator
-
-Methods
-
-- addStudent()
-- calculateGrade()
-- calculateAverage()
-- calculateTotal()
-- displayStudents()
-- deleteStudent()
-- saveToLocalStorage()
-- loadFromLocalStorage()
+| Feature | Expected Input | Expected Output |
+|---|---|---|
+| Add Student | Student name, CA, Assignment, Exam | New student record |
+| Calculate Total | Three assessment scores | Total score |
+| Calculate Average | Total score | Average score |
+| Assign Grade | Average score | Grade A–F |
+| Pass/Fail | Average score | PASS or FAIL |
+| Display Records | Saved student records | Student records table |
+| Delete Student | Student record ID | Updated student records |
+| Local Storage | Student records | Saved records after refresh |
 
 ---
 
-## Functions
+## 6. Assessment Scores
 
-- validateInput()
-- clearForm()
-- updateDashboard()
-- renderTable()
+The application accepts three assessment scores:
+
+- CA Score – 0 to 100
+- Assignment Score – 0 to 100
+- Exam Score – 0 to 100
+
+The total is calculated as:
+
+Total = CA + Assignment + Exam
+
+The average is calculated as:
+
+Average = Total ÷ 3
 
 ---
 
-## Technologies Used
+## 7. Grading Scale
+
+| Grade | Average |
+|---|---|
+| A | 80 – 100 |
+| B | 70 – 79 |
+| C | 60 – 69 |
+| D | 50 – 59 |
+| E | 40 – 49 |
+| F | 0 – 39 |
+
+A student with an average of 50 or above is marked as PASS.
+A student below 50 is marked as FAIL.
+
+---
+
+## 8. Technologies Used
 
 - HTML5
 - CSS3
-- JavaScript (ES6)
+- JavaScript ES6
+- Object-Oriented Programming (OOP)
 - Local Storage
 - Git
 - GitHub
 
 ---
 
-## Folder Structure
+## 9. Main Features
 
-Student-Grade-Calculator/
-
-index.html
-
-style.css
-
-script.js
-
-README.md
-
-PROJECT_PLAN.md
-
-assets/
+- Add student records
+- Calculate total score
+- Calculate average score
+- Automatically assign grades
+- Display pass/fail status
+- Display all student records
+- Search student records
+- Delete student records
+- Save records using Local Storage
+- Dashboard statistics
+- About section
+- Light/dark theme
 
 ---
 
-## Development Plan
+## 10. Development Plan
 
-Phase 1
-Project Planning
+### Phase 1 – Project Planning
+Define the project requirements, inputs, outputs, classes and functions.
 
-Phase 2
-GitHub Repository
+### Phase 2 – Version Control
+Create the GitHub repository and commit the project plan.
 
-Phase 3
-HTML Structure
+### Phase 3 – HTML Structure
+Build the application interface and student input form.
 
-Phase 4
-CSS Styling
+### Phase 4 – CSS Styling
+Design the responsive interface, navigation bar, cards, table and
+interactive elements.
 
-Phase 5
-JavaScript Functionality
+### Phase 5 – JavaScript Functionality
+Implement the Student and GradeBook classes, calculations, validation,
+Local Storage, search, deletion and navigation.
 
-Phase 6
-Testing
+### Phase 6 – Testing
+Test the application using normal inputs, invalid inputs and edge cases.
+Document bugs discovered and their fixes.
 
-Phase 7
-Presentation
+### Phase 7 – Presentation
+Prepare the presentation slides and demonstrate the completed application.
